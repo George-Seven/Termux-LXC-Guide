@@ -1,0 +1,9 @@
+[Unit]
+Description=Mount BinderFS
+Before=network.target lxc.service waydroid-container.service
+
+[Service]
+ExecStart=/usr/lib/required-lxc-configuration/scripts/internal/%N.sh
+
+[Install]
+WantedBy=multi-user.target
