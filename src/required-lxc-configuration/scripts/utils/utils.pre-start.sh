@@ -36,6 +36,10 @@ sed -i -E 's/^( *#* *)?DNS=.*/DNS=1.1.1.1/g' "${LXC_ROOTFS_PATH}/etc/systemd/res
 # Fix connectivity inside container
 lxc-net start
 
+# Adds Termux colors
+sed -i '/TERM/d' "${LXC_ROOTFS_PATH}/etc/environment"
+echo 'TERM="'${TERM}'"' >> "${LXC_ROOTFS_PATH}/etc/environment"
+
 # Use PulseAudio for sound
 sed -i '/PULSE_SERVER/d' "${LXC_ROOTFS_PATH}/etc/environment"
 echo 'PULSE_SERVER="10.0.4.1:4713"' >> "${LXC_ROOTFS_PATH}/etc/environment"
