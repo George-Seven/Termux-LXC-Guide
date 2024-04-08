@@ -124,6 +124,13 @@ Works out of the box.
 
 <br>
 
+## Networking?
+Wi-Fi and mobile data works out of the box.
+
+>**Note:-** VPN of the phone doesn't work inside the container.
+
+<br>
+
 ## Display?
 Many options, I recommend VNC or Termux:X11.
 
