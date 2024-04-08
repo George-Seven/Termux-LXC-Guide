@@ -180,7 +180,7 @@ termux-x11 :1
 
 Login to the container.
 
->**Hint:-** To open a new Termux terminal pane, slide slowly from the middle right-most to the left and select new session.
+>**Hint:-** To open a new Termux terminal pane, slide slowly from the middle left-most to the right and select new session.
 
 In a new terminal pane run -
 ```
