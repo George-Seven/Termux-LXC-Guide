@@ -191,7 +191,7 @@ Login to the container.
 
 In a new terminal pane run -
 ```
-CONTAINER="ubuntu"; sudo bash -c "mkdir '${PREFIX}/var/lib/lxc/${CONTAINER}/rootfs/tmp/.X11-unix' 2>/dev/null; mount --bind '${PREFIX}/tmp/.X11-unix' '${PREFIX}/var/lib/lxc/${CONTAINER}/rootfs/tmp/.X11-unix'"
+CONTAINER="ubuntu"; sudo bash -c "mkdir '${PREFIX}/var/lib/lxc/${CONTAINER}/rootfs/tmp/.X11-unix' 2>/dev/null; umount '${PREFIX}/var/lib/lxc/${CONTAINER}/rootfs/tmp/.X11-unix' 2>/dev/null; mount --bind '${PREFIX}/tmp/.X11-unix' '${PREFIX}/var/lib/lxc/${CONTAINER}/rootfs/tmp/.X11-unix'"
 ```
 Where `ubuntu` is the container.
 
@@ -212,7 +212,7 @@ Like how the guide for [hardware acceleration in chroot/proot](https://github.co
 
 Follow the steps in that section and in a terminal pane run the command -
 ```
-CONTAINER="ubuntu"; sudo bash -c "touch '${PREFIX}/var/lib/lxc/${CONTAINER}/rootfs/tmp/.virgl_test'; mount --bind '${PREFIX}/tmp/.virgl_test' '${PREFIX}/var/lib/lxc/${CONTAINER}/rootfs/tmp/.virgl_test'; chmod 777 '${PREFIX}/var/lib/lxc/${CONTAINER}/rootfs/tmp/.virgl_test'"
+CONTAINER="ubuntu"; sudo bash -c "touch '${PREFIX}/var/lib/lxc/${CONTAINER}/rootfs/tmp/.virgl_test'; umount '${PREFIX}/var/lib/lxc/${CONTAINER}/rootfs/tmp/.virgl_test' 2>/dev/null; mount --bind '${PREFIX}/tmp/.virgl_test' '${PREFIX}/var/lib/lxc/${CONTAINER}/rootfs/tmp/.virgl_test'; chmod 777 '${PREFIX}/var/lib/lxc/${CONTAINER}/rootfs/tmp/.virgl_test'"
 ```
 
 And then run programs with hardware acceleration enabled as mentioned [here](https://github.com/LinuxDroidMaster/Termux-Desktops/blob/main/Documentation/HardwareAcceleration.md#3-in-proot-distro).

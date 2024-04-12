@@ -45,6 +45,20 @@ sed -i '/PULSE_SERVER/d' "${LXC_ROOTFS_PATH}/etc/environment"
 echo 'PULSE_SERVER="10.0.4.1:4713"' >> "${LXC_ROOTFS_PATH}/etc/environment"
 su "${SUDO_USER}" -c "PATH='${PREFIX}/bin:${PATH}' HOME='${PREFIX}/var/run/lxc-pulse' pulseaudio --start --load='module-native-protocol-tcp auth-ip-acl=10.0.4.0/24 auth-anonymous=1' --exit-idle-time=-1"
 
+# Remove redundant dialog
+# http://c-nergy.be/blog/?p=12073
+mkdir -p "${LXC_ROOTFS_PATH}/etc/polkit-1/localauthority/50-local.d"
+chmod 755 "${LXC_ROOTFS_PATH}/etc/polkit-1/localauthority/50-local.d"
+
+required_configuration='[Allow Colord all Users]
+Identity=unix-user:*
+Action=org.freedesktop.color-manager.create-device;org.freedesktop.color-manager.create-profile;org.freedesktop.color-manager.delete-device;org.freedesktop.color-manager.delete-profile;org.freedesktop.color-manager.modify-device;org.freedesktop.color-manager.modify-profile
+ResultAny=no
+ResultInactive=no
+ResultActive=yes'
+
+echo "${required_configuration}" > "${LXC_ROOTFS_PATH}/etc/polkit-1/localauthority/50-local.d/45-allow-colord.pkla"
+
 # Makes non-funtional udevadm always return true, or else some packages and snaps gives errors when trying to install
 if [ ! -e "${LXC_ROOTFS_PATH}/usr/bin/udevadm." ]; then
   mv -f "${LXC_ROOTFS_PATH}/usr/bin/udevadm" "${LXC_ROOTFS_PATH}/usr/bin/udevadm."
