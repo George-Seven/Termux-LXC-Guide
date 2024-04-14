@@ -36,6 +36,7 @@ bash ~/Termux-LXC-Guide/setup-termux-lxc.sh
 ```
 And done.
 
+#### Help text
 ```
  Termux LXC configurations completed.
 
@@ -51,6 +52,11 @@ And done.
 
  Eg:- username is 'ubuntu' and password is 'password'
       without quotes.
+```
+
+#### Keep it updated
+```
+cd ~/Termux-LXC-Guide; git pull
 ```
 <br>
 
