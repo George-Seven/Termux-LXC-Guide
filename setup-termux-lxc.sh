@@ -22,8 +22,9 @@ clear 2>/dev/null
 # Set correct permissions for configurations directory
 # Helpful if you create new configs on the go and don't want to chown, chgrp and chmod them every time to be Termux compatible
 sudo test -d "${GITHUB_DIR}" && export SUDO_USER="$(sudo /system/bin/pm list packages -U com.termux | grep -F "package:com.termux " | sed 's/.*://')" || exit 1
-sudo chown -R "${SUDO_USER}" "${GITHUB_DIR}" || exit 1
+sudo chown -R "${SUDO_USER}:${SUDO_USER}" "${GITHUB_DIR}" || exit 1
 sudo chgrp -R "${SUDO_USER}" "${GITHUB_DIR}"
+sudo restorecon -R "${GITHUB_DIR}" 2>/dev/null >/dev/null
 chmod 755 "${GITHUB_DIR}"
 cd "${GITHUB_DIR}"
 chmod 755 ".git" 2>/dev/null >/dev/null
@@ -39,8 +40,9 @@ done
 # Correctly configure LXC
 # Fixes colors, network, etc.
 mkdir -p "${PREFIX}/etc/lxc"
-sudo chown -R "${SUDO_USER}" "${PREFIX}/etc/lxc"
+sudo chown -R "${SUDO_USER}:${SUDO_USER}" "${PREFIX}/etc/lxc"
 sudo chgrp -R "${SUDO_USER}" "${PREFIX}/etc/lxc"
+sudo restorecon -R "${PREFIX}/etc/lxc" 2>/dev/null >/dev/null
 chmod 700 "${PREFIX}/etc/lxc"
 rm -rf "${PREFIX}/etc/lxc/default.conf"
 
@@ -60,8 +62,9 @@ lxc.hook.post-stop = "'${GITHUB_DIR}'/src/required-lxc-configuration/scripts/uti
 # lxc.cgroup.memory.limit_in_bytes = 3G'
 
 echo "${required_configuration}" > "${PREFIX}/etc/lxc/default.conf"
-sudo chown "${SUDO_USER}" "${PREFIX}/etc/lxc/default.conf"
+sudo chown "${SUDO_USER}:${SUDO_USER}" "${PREFIX}/etc/lxc/default.conf"
 sudo chgrp "${SUDO_USER}" "${PREFIX}/etc/lxc/default.conf"
+sudo restorecon "${PREFIX}/etc/lxc/default.conf" 2>/dev/null >/dev/null
 chmod 644 "${PREFIX}/etc/lxc/default.conf"
 sudo sh -c "export SUDO_USER='${SUDO_USER}'; src/required-lxc-configuration/scripts/utils/utils.lxc-net.configuration.sh" || exit 1
 

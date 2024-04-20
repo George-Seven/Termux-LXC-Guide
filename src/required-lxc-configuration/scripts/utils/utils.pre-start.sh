@@ -44,6 +44,7 @@ echo 'TERM="'${TERM}'"' >> "${LXC_ROOTFS_PATH}/etc/environment"
 sed -i '/PULSE_SERVER/d' "${LXC_ROOTFS_PATH}/etc/environment"
 echo 'PULSE_SERVER="10.0.4.1:4713"' >> "${LXC_ROOTFS_PATH}/etc/environment"
 su "${SUDO_USER}" -c "PATH='${PREFIX}/bin:${PATH}' HOME='${PREFIX}/var/run/lxc-pulse' pulseaudio --start --load='module-native-protocol-tcp auth-ip-acl=10.0.4.0/24 auth-anonymous=1' --exit-idle-time=-1"
+restorecon -R "${PREFIX}/var/run/lxc-pulse"
 
 # Remove redundant dialog
 # http://c-nergy.be/blog/?p=12073

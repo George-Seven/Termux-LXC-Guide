@@ -12,16 +12,18 @@ export TMPDIR="$(dirname "$(mktemp -u)")"
 if [ -n "${PREFIX}" ] && [ "x${PREFIX}" = "x/data/data/com.termux/files/usr" ]; then
   IS_TERMUX="true"
   LXC_NET_PATH="${PREFIX}/bin/lxc-net."
-  chown "${SUDO_USER}" "${PREFIX}/etc/lxc/default.conf"
+  chown "${SUDO_USER}:${SUDO_USER}" "${PREFIX}/etc/lxc/default.conf"
   chgrp "${SUDO_USER}" "${PREFIX}/etc/lxc/default.conf"
+  restorecon "${PREFIX}/etc/lxc/default.conf" 2>/dev/null >/dev/null
   if ! [ -f "${LXC_NET_PATH}" ]; then
     if ! curl -sL "https://github.com/lxc/lxc/blob/main/config/init/common/lxc-net.in?raw=true" -o "${LXC_NET_PATH}"; then
       "No internet connection"
       exit 1
     fi
   fi
-  chown "${SUDO_USER}" "${LXC_NET_PATH}"
+  chown "${SUDO_USER}:${SUDO_USER}" "${LXC_NET_PATH}"
   chgrp "${SUDO_USER}" "${LXC_NET_PATH}"
+  restorecon "${LXC_NET_PATH}" 2>/dev/null >/dev/null
   chmod 755 "${LXC_NET_PATH}"
   termux-fix-shebang "${LXC_NET_PATH}"
   required_configuration='#!/data/data/com.termux/files/usr/bin/env sh
@@ -55,8 +57,9 @@ esac
 
 exit $?'
   echo "${required_configuration}" > "${PREFIX}/bin/lxc-net"
-  chown "${SUDO_USER}" "${PREFIX}/bin/lxc-net"
+  chown "${SUDO_USER}:${SUDO_USER}" "${PREFIX}/bin/lxc-net"
   chgrp "${SUDO_USER}" "${PREFIX}/bin/lxc-net"
+  restorecon "${PREFIX}/bin/lxc-net" 2>/dev/null >/dev/null
   chmod 755 "${PREFIX}/bin/lxc-net"
   sed -i '/# Start Termux specific fixes/,/# End Termux specific fixes/d' "${LXC_NET_PATH}"
   required_configuration='# Start Termux specific fixes
